@@ -6,25 +6,26 @@ import (
 
 // Configuration is a parsed main.workflow file
 type Configuration struct {
-	Actions   []*Action
-	Workflows []*Workflow
+	Actions   []*Action   `hcl:"action"`
+	Workflows []*Workflow `hcl:"workflow"`
 }
 
 // Action represents a single "action" stanza in a .workflow file.
 type Action struct {
-	Identifier string
-	Uses       Uses
-	Runs, Args Command
-	Needs      []string
-	Env        map[string]string
-	Secrets    []string
+	Identifier string            `hcl:",key"`
+	Uses       Uses              `hcl:"uses"`
+	Runs       Command           `hcl:"runs"`
+	Args       Command           `hcl:"args"`
+	Needs      []string          `hcl:"needs"`
+	Env        map[string]string `hcl:"env"`
+	Secrets    []string          `hcl:"secrets"`
 }
 
 // Workflow represents a single "workflow" stanza in a .workflow file.
 type Workflow struct {
-	Identifier string
-	On         string
-	Resolves   []string
+	Identifier string   `hcl:",key"`
+	On         string   `hcl:"on"`
+	Resolves   []string `hcl:"resolves"`
 }
 
 // GetAction looks up action by identifier.
